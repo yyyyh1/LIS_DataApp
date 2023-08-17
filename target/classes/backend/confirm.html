@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Data Display</title>
+  <style>
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+  </style>
+</head>
+<body>
+<h1>Data Display</h1>
+<table>
+  <thead>
+  <tr>
+    <th>#</th>
+    <th>Name</th>
+    <th>Age</th>
+    <th>Title</th>
+    <th>Hometown</th>
+  </tr>
+  </thead>
+  <tbody id="tdbody">
+  </tbody>
+</table>
+
+<div>
+  <button id="confirmed">Confirmed</button>
+  <button id="cancel">Cancel</button>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  // get data from server
+  function fetchData() {
+    $.ajax({
+      url: "/getData", // interface of backend request
+      dataType: 'json', // datatype
+      type: "get", // request type
+      success: function (data) {
+        var dataStr = JSON.stringify(data);
+        data = $.parseJSON(dataStr);
+        var dataArr = [data]; // put single object into array
+        displayData(dataArr); // pass data.data to displayData function
+      },
+      error: function (arg1) {
+        console.log(arg1);
+      }
+    })
+  }
+
+  // write data into form
+  function displayData(data) {
+    var tbody = document.getElementById('tdbody');
+    var rowStr = "";
+    for (var i = 0; i < data.length; i++) {
+      var tdStr = "<tr>";
+      tdStr += "<td>" + (i + 1) + "</td>";
+      tdStr += "<td>" + (data[i].name || 'null') + "</td>"; // display name, if "null" show blank
+      tdStr += "<td>" + (data[i].age || 'null') + "</td>"; // display age, if "null" show blank
+      tdStr += "<td>" + (data[i].title || 'null') + "</td>"; // display title, if "null" show blank
+      tdStr += "<td>" + (data[i].hometown || 'null') + "</td>"; // display hometown, if "null" show blank
+      tdStr += "</tr>";
+      rowStr += tdStr;
+    }
+    tbody.innerHTML = rowStr;
+  }
+
+  // call fetchData function when the page has loaded, get and display data
+  $(document).ready(function() {
+    fetchData();
+  });
+
+  // Confirmed button click event
+  $('#confirmed').click(function() {
+    alert("Add data successfully!");
+    window.close();
+  });
+
+  // Cancel button click event
+  $('#cancel').click(function() {
+    // send delete request
+    $.ajax({
+      url: "/deleteData",
+      type: "delete",
+      success: function() {
+        fetchData(); // reload data
+        window.close();
+      },
+      error: function(arg1) {
+        console.log(arg1);
+      }
+    });
+  });
+</script>
+</body>
+</html>

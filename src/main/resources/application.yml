@@ -1,0 +1,12 @@
+spring:
+  application:
+    name: data_entry_app
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/data_entry
+    username: root
+    password: Yh980604!
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
