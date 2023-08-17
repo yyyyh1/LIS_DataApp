@@ -19,6 +19,10 @@ Clone the project
   git clone https://github.com/yyyyh1/LIS_DataApp.git
 ```
 
+create a database in MySQL and execute sql script file "data-app.sql". Config the username and password of database in application.yml.
+
 Open the project in IntelliJ IDEA and run the main() in DataEntryAppApplication.java
 
 Using brower to access: http://localhost:8080/backend/form.html
+
+
